@@ -5,7 +5,7 @@
         "builtIn": 1,
         "datasource": {
           "type": "datasource",
-          "uid": "grafana"
+          "uid": "${DS_PROMETHEUS}"
         },
         "enable": true,
         "hide": true,
@@ -32,7 +32,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Shows the percentiles of request latency for DMA Attachment service",
       "fieldConfig": {
@@ -83,8 +83,7 @@
             ]
           },
           "unit": "ms"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 9,
@@ -93,7 +92,6 @@
         "y": 0
       },
       "id": 4,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [],
@@ -108,28 +106,28 @@
       "pluginVersion": "8.5.27",
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(dma_attachment_request_latency_ms_bucket{method=\"$method\",endpoint=\"$endpoint\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.95, sum(rate(example_request_latency_ms_bucket{application=\"Service-B\"}[5m])) by (le))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "p95",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.90, sum(rate(dma_attachment_request_latency_ms_bucket{method=\"$method\",endpoint=\"$endpoint\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.90, sum(rate(example_request_latency_ms_bucket{application=\"Service-B\"}[5m])) by (le))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "p90",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.75, sum(rate(dma_attachment_request_latency_ms_bucket{method=\"$method\",endpoint=\"$endpoint\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.75, sum(rate(example_request_latency_ms_bucket{application=\"Service-B\"}[5m])) by (le))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "p75",
           "refId": "C"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(dma_attachment_request_latency_ms_bucket{method=\"$method\",endpoint=\"$endpoint\"}[5m])) by (le))",
+          "expr": "histogram_quantile(0.50, sum(rate(example_request_latency_ms_bucket{application=\"Service-B\"}[5m])) by (le))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "p50",
@@ -142,7 +140,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Shows the average latency in milliseconds for DMA Attachment requests",
       "fieldConfig": {
@@ -197,8 +195,7 @@
             ]
           },
           "unit": "ms"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 9,
@@ -207,10 +204,12 @@
         "y": 0
       },
       "id": 2,
-      "links": [],
       "options": {
         "legend": {
-          "calcs": ["mean", "lastNotNull"],
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
           "displayMode": "list",
           "placement": "bottom"
         },
@@ -224,9 +223,9 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(dma_attachment_request_latency_ms_sum{method=\"$method\",endpoint=\"$endpoint\"}[5m]) / rate(dma_attachment_request_latency_ms_count{method=\"$method\",endpoint=\"$endpoint\"}[5m])",
+          "expr": "rate(example_request_latency_ms_sum{application=\"Service-B\"}[5m]) / rate(example_request_latency_ms_count{application=\"Service-B\"}[5m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Average Latency",
@@ -239,7 +238,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Shows the throughput (requests per second) for DMA Attachment service",
       "fieldConfig": {
@@ -290,8 +289,7 @@
             ]
           },
           "unit": "reqps"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
@@ -300,10 +298,12 @@
         "y": 9
       },
       "id": 6,
-      "links": [],
       "options": {
         "legend": {
-          "calcs": ["mean", "lastNotNull"],
+          "calcs": [
+            "mean",
+            "lastNotNull"
+          ],
           "displayMode": "list",
           "placement": "bottom"
         },
@@ -315,7 +315,7 @@
       "pluginVersion": "8.5.27",
       "targets": [
         {
-          "expr": "rate(dma_attachment_requests_total{method=\"$method\",endpoint=\"$endpoint\"}[5m])",
+          "expr": "rate(example_requests_count_total{application=\"Service-B\"}[5m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Throughput (req/s)",
@@ -328,7 +328,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Shows the average latency in milliseconds for messages waiting in queue",
       "fieldConfig": {
@@ -383,8 +383,7 @@
             ]
           },
           "unit": "ms"
-        },
-        "overrides": []
+        }
       },
       "gridPos": {
         "h": 8,
@@ -393,10 +392,13 @@
         "y": 9
       },
       "id": 8,
-      "links": [],
       "options": {
         "legend": {
-          "calcs": ["mean", "lastNotNull", "max"],
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
           "displayMode": "list",
           "placement": "bottom"
         },
@@ -410,10 +412,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(dma_attachment_queue_latency_ms_sum{queue=\"$queue\"}[5m]) / rate(dma_attachment_queue_latency_ms_count{queue=\"$queue\"}[5m])",
+          "expr": "rate(queue_delivery_latency_ms_sum{application=\"Service-B\"}[5m]) / rate(queue_delivery_latency_ms_count{application=\"Service-B\"}[5m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{queue}} - Avg Queue Latency",
@@ -423,10 +425,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "histogram_quantile(0.95, rate(dma_attachment_queue_latency_ms_bucket{queue=\"$queue\"}[5m]))",
+          "expr": "histogram_quantile(0.95, rate(queue_delivery_latency_ms_bucket{application=\"Service-B\"}[5m]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{queue}} - p95 Queue Latency",
@@ -441,9 +443,24 @@
   "refresh": "30s",
   "schemaVersion": 36,
   "style": "dark",
-  "tags": ["DMAAttachment", "monitoring", "performance"],
+  "tags": [
+    "DMAAttachment",
+    "monitoring",
+    "performance"
+  ],
   "templating": {
     "list": [
+      {
+        "name": "DS_PROMETHEUS",
+        "type": "datasource",
+        "pluginId": "prometheus",
+        "label": "Prometheus",
+        "query": "prometheus",
+        "current": {
+          "text": "Prometheus",
+          "value": "Prometheus"
+        }
+      },
       {
         "current": {
           "selected": false,
@@ -452,16 +469,16 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "PBFA97CFB590B2093"
+          "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(dma_attachment_requests_total, method)",
+        "definition": "label_values(example_requests_count_total{application=\"Service-B\"}, method)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "method",
         "options": [],
         "query": {
-          "query": "label_values(dma_attachment_requests_total, method)",
+          "query": "label_values(example_requests_count_total{application=\"Service-B\"}, method)",
           "refId": "Prometheus-method-Variable-Query"
         },
         "refresh": 1,
@@ -481,16 +498,16 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "PBFA97CFB590B2093"
+          "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(dma_attachment_requests_total, endpoint)",
+        "definition": "label_values(example_requests_count_total{application=\"Service-B\"}, url)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "endpoint",
         "options": [],
         "query": {
-          "query": "label_values(dma_attachment_requests_total, endpoint)",
+          "query": "label_values(example_requests_count_total{application=\"Service-B\"}, url)",
           "refId": "Prometheus-endpoint-Variable-Query"
         },
         "refresh": 1,
@@ -510,16 +527,16 @@
         },
         "datasource": {
           "type": "prometheus",
-          "uid": "PBFA97CFB590B2093"
+          "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(dma_attachment_queue_latency_ms_count, queue)",
+        "definition": "label_values(queue_delivery_latency_ms_count{application=\"Service-B\"}, queue)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "queue",
         "options": [],
         "query": {
-          "query": "label_values(dma_attachment_queue_latency_ms_count, queue)",
+          "query": "label_values(queue_delivery_latency_ms_count{application=\"Service-B\"}, queue)",
           "refId": "Prometheus-queue-Variable-Query"
         },
         "refresh": 1,
@@ -562,9 +579,19 @@
       "30d"
     ]
   },
-  "timezone": "",
-  "title": "DMAAttachment Monitoring Dashboard",
+  "timezone": "utc",
+  "title": "DMA (Improved)",
   "uid": "dma-attachment-1",
   "version": 1,
-  "weekStart": ""
+  "weekStart": "",
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ]
 }
